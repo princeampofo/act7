@@ -11,7 +11,6 @@ void main() {
 }
 
 // Mood Model - The "Brain" of our app
-// This class holds the state and notifies listeners when it changes
 class MoodModel with ChangeNotifier {
   String _currentMood = 'happy';
 
@@ -19,17 +18,17 @@ class MoodModel with ChangeNotifier {
 
   void setHappy() {
     _currentMood = 'happy';
-    notifyListeners(); // This tells all listeners to rebuild
+    notifyListeners();
   }
 
   void setSad() {
     _currentMood = 'sad';
-    notifyListeners(); // This tells all listeners to rebuild
+    notifyListeners(); 
   }
 
   void setExcited() {
     _currentMood = 'excited';
-    notifyListeners(); // This tells all listeners to rebuild
+    notifyListeners();
   }
 }
 
@@ -63,12 +62,43 @@ class HomePage extends StatelessWidget {
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 30),
-            Text('Mood'),
+            MoodDisplay(),
             SizedBox(height: 50),
-            Text('Buttons'),
           ],
         ),
       ),
+    );
+  }
+}
+
+// Widget that displays the current mood
+class MoodDisplay extends StatelessWidget {
+  // Image URLs
+  final Map<String, String> moodImages = {
+    'happy': 'https://t3.ftcdn.net/jpg/02/95/26/46/360_F_295264675_clwKZxogAhxLS9sD163Tgkz1WMHsq1RJ.jpg',
+    'sad': 'https://as2.ftcdn.net/v2/jpg/10/62/82/49/1000_F_1062824959_Z1LUjpA33wEjIMGWZbNkA9CVs1lw6ySz.webp',
+    'excited': 'https://t3.ftcdn.net/jpg/16/46/28/94/240_F_1646289463_fCM1Kcl6KcxFsiXOnqwE5xyaKl29izcX.jpg',
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<MoodModel>(
+      builder: (context, moodModel, child) {
+        String imageUrl = moodImages[moodModel.currentMood]!;
+        
+        return Container(
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.blue.shade50,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Image.network(
+            imageUrl,
+            width: 150,
+            height: 150,
+          ),
+        );
+      },
     );
   }
 }
