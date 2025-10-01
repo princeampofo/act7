@@ -11,25 +11,24 @@ void main() {
 }
 
 // Mood Model - The "Brain" of our app
-// This class holds the state and notifies listeners when it changes
 class MoodModel with ChangeNotifier {
-  String _currentMood = 'happy';
+  String _currentMood = '😊 use your own img here ';
 
   String get currentMood => _currentMood;
 
   void setHappy() {
-    _currentMood = 'happy';
-    notifyListeners(); // This tells all listeners to rebuild
+    _currentMood = '😊 use your own img here ';
+    notifyListeners();
   }
 
   void setSad() {
-    _currentMood = 'sad';
-    notifyListeners(); // This tells all listeners to rebuild
+    _currentMood = '😢 use your own img here ';
+    notifyListeners();
   }
 
   void setExcited() {
-    _currentMood = 'excited';
-    notifyListeners(); // This tells all listeners to rebuild
+    _currentMood = '🎉 use your own img here ';
+    notifyListeners();
   }
 }
 
@@ -50,18 +49,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Mood Toggle Challenge'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text('Mood Toggle Challenge')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'How are you feeling?',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
+            Text('How are you feeling?', style: TextStyle(fontSize: 24)),
             SizedBox(height: 30),
             MoodDisplay(),
             SizedBox(height: 50),
@@ -74,76 +67,41 @@ class HomePage extends StatelessWidget {
 }
 
 // Widget that displays the current mood
-// Uses Consumer to listen to MoodModel changes
 class MoodDisplay extends StatelessWidget {
-  // Network URLs for mood images
-  final Map<String, String> moodImages = {
-    'happy': 'https://t3.ftcdn.net/jpg/02/95/26/46/360_F_295264675_clwKZxogAhxLS9sD163Tgkz1WMHsq1RJ.jpg',
-    'sad': 'https://as2.ftcdn.net/v2/jpg/10/62/82/49/1000_F_1062824959_Z1LUjpA33wEjIMGWZbNkA9CVs1lw6ySz.webp',
-    'excited': 'https://t3.ftcdn.net/jpg/16/46/28/94/240_F_1646289463_fCM1Kcl6KcxFsiXOnqwE5xyaKl29izcX.jpg',
-  };
-
   @override
   Widget build(BuildContext context) {
     return Consumer<MoodModel>(
       builder: (context, moodModel, child) {
-        // This builder runs every time moodModel changes
-        String imageUrl = moodImages[moodModel.currentMood]!;
-        
-        return Container(
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.blue.shade50,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Image.network(
-            imageUrl,
-            width: 150,
-            height: 150,
-          ),
-        );
+        return Text(moodModel.currentMood, style: TextStyle(fontSize: 100));
       },
     );
   }
 }
 
 // Widget with buttons to change the mood
-// Uses Provider.of with listen: false because we don't need to rebuild when mood changes
 class MoodButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        ElevatedButton.icon(
+        ElevatedButton(
           onPressed: () {
             Provider.of<MoodModel>(context, listen: false).setHappy();
           },
-          icon: Text('😊', style: TextStyle(fontSize: 24)),
-          label: Text('Happy'),
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          ),
+          child: Text('Happy 😊 use your own img here '),
         ),
-        ElevatedButton.icon(
+        ElevatedButton(
           onPressed: () {
             Provider.of<MoodModel>(context, listen: false).setSad();
           },
-          icon: Text('😢', style: TextStyle(fontSize: 24)),
-          label: Text('Sad'),
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          ),
+          child: Text('Sad 😢 use your own img here '),
         ),
-        ElevatedButton.icon(
+        ElevatedButton(
           onPressed: () {
             Provider.of<MoodModel>(context, listen: false).setExcited();
           },
-          icon: Text('🎉', style: TextStyle(fontSize: 24)),
-          label: Text('Excited'),
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          ),
+          child: Text('Excited 🎉 use your own img here '),
         ),
       ],
     );
